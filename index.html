@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Crowd Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <!-- <link rel="shortcut icon" href="/favicon.f070609c.ico"> -->
+    <link rel="shortcut icon" href="assets/imgs/favicon.ico">
+    <style>
+        /* body { overflow: hidden; } */
+        #triangles {
+            color: rgb(128, 0, 0);
+            font-size: 15px;
+            font-weight: normal;
+            position: fixed;
+            left: 0px;
+            top: 50px;
+        }
+        #visibleAvatarCount {
+            color: rgb(128, 0, 0);
+            font-size: 15px;
+            font-weight: normal;
+            position: fixed;
+            left: 0px;
+            top: 70px;
+        }
+    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        window.timeTest={
+            pretime:performance.now(),
+            save:[],
+            time_all:0,
+            measure:tag=>{
+                var time0=performance.now()
+                var sub=time0-window.timeTest.pretime
+                window.timeTest.time_all+=sub
+                window.timeTest.pretime=time0
+                window.timeTest.save.push([tag,sub])
+                console.log(
+                    Math.round(sub),
+                    tag
+                )
+            }
+        }
+    </script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <!-- <script src="src/index.js"></script> -->
+    <script src="src/main.js"></script>
+</head>
+<body>
+<canvas id="myCanvas"></canvas>
+<h1 id="triangles"></h1>
+<!-- <h1 id="visibleAvatarCount"></h1>-->
+</body>
