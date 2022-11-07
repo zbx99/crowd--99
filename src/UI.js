@@ -95,7 +95,7 @@ class UI{
     addUI_pointLight(name,dirLight1){
         var gui=this.gui_light
         const config_dir1 = {
-            intensity: 0.0,
+            intensity: 0.7,
             posX:dirLight1.position.x,
             posY:dirLight1.position.y,
             posZ:dirLight1.position.z,
@@ -137,7 +137,7 @@ class UI{
     addUI_directionalLight(name,dirLight2){
         var gui=this.gui_light
         const config_dir2 = {
-            intensity: 2.0,
+            intensity: 1.0,
             posX:-20,
             posY:0,
             posZ:0,

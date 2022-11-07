@@ -66,11 +66,27 @@ export class Building{
             for(let j=0; j<structList[i].length; j++){
                 var object = node.clone()
                 object.geometry = node.geometry.clone()
-                object.material = new THREE.MeshStandardMaterial({
-                    color:new THREE.Color(0.6+Math.random()*0.4,0.6+Math.random()*0.4,0.6+Math.random()*0.4),
-                    emissive:new THREE.Color(Math.random()*0.4,Math.random()*0.4,Math.random()*0.4),
-                    side:2
-                })
+                object.material = 
+                // new THREE.MeshStandardMaterial({
+                //     color:new THREE.Color(0.6+Math.random()*0.4,0.6+Math.random()*0.4,0.6+Math.random()*0.4),
+                //     emissive:new THREE.Color(Math.random()*0.4,Math.random()*0.4,Math.random()*0.4),
+                //     side:2
+                // })
+                new THREE.MeshPhysicalMaterial({
+                    // color:0xff0000,
+                    color:new THREE.Color(Math.random()*0.1+0.3,0.9+Math.random()*0.1,0.9+Math.random()*0.1),
+                    emissive:new THREE.Color(0.2+Math.random()*0.1,0.3+Math.random()*0.2,0.3+Math.random()*0.2),
+                    // 材质像金属的程度. 非金属材料，如木材或石材，使用0.0，金属使用1.0，中间没有（通常）.
+                    // 默认 0.5. 0.0到1.0之间的值可用于生锈的金属外观
+                    metalness: 1.0,
+                    // 材料的粗糙程度. 0.0表示平滑的镜面反射，1.0表示完全漫反射. 默认 0.5
+                    roughness: 0.6,
+                    // 设置环境贴图
+                    // envMap: textureCube,
+                    // 反射程度, 从 0.0 到1.0.默认0.5.
+                    // 这模拟了非金属材料的反射率。 当metalness为1.0时无效
+                    // reflectivity: 0.5,
+                  })
                 var group = structList[i][j]
                 var index_arr = []
                 for(let k=0; k<group.c*3; k+=3){
