@@ -133,10 +133,7 @@ class MaterialProcessor1{
         }else if(name=="hair"){
             material.normalMap=this.normalMap2//textureLoader.load("./assets/models/CloM_A_hair_Normal.png")
         }
-        if(name=="head"||name=="CloM_A_body_geo"){
-            material.scattering=true// m.material.useOldParam=false
-			this.setSkinParam(material)
-        }
+        
 		if(name=="CloW_A_kuzi_geo"
 		||name=="CloW_A_shangyi_geo"
 		||name=="CloW_A_waitao_geo1"
@@ -148,7 +145,10 @@ class MaterialProcessor1{
 				material.roughness=0
 				// material.metalness=1
 			}
-		
+		if(name=="head"||name=="CloM_A_body_geo"){
+            material.scattering=true// m.material.useOldParam=false
+			this.setSkinParam(material)
+        }
 	}
     setSkinParam(material){
 		material.color = new Color( 0xffffff ); // diffuse
@@ -228,6 +228,7 @@ class MaterialProcessor2{
 		this.normalMap2=textureLoader.load("./assets/normal_woman02/CloW_B_hair_Normal.png")
 		glb.scene.traverse(m=>{
 			if(m instanceof THREE.SkinnedMesh){
+				console.log("name",m.name)
 				self.processMesh(m)
 			}
 		})
@@ -243,7 +244,7 @@ class MaterialProcessor2{
         }else if(name=="hair"){
             // material.normalMap=this.normalMap2//textureLoader.load("./assets/models/CloM_A_hair_Normal.png")
         }
-        if(name=="head"){//if(name=="head"||name=="CloW_C_body_geo1"){
+        if(name=="head"||name=="CloW_C_body_geo1"){//if(name=="head"||name=="CloW_C_body_geo1"){
             material.scattering=true// m.material.useOldParam=false
 			this.setSkinParam(material)
         }
@@ -260,6 +261,7 @@ class MaterialProcessor2{
 		
 	}
     setSkinParam(material){
+		// console.log("isSkin")
 		material.color = new Color( 0xffffff ); // diffuse
 		material.roughness = 1.0;
 		material.metalness = 0.0;

@@ -103,7 +103,6 @@ export class Building{
                     // reflectivity: 0.5,
                     
                   })
-                console.log(object.material)
                 var group = structList[i][j]
                 var index_arr = []
                 for(let k=0; k<group.c*3; k+=3){
