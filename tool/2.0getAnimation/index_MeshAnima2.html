@@ -14,7 +14,7 @@
 <script src="lib/GLTFLoader.js"></script>
 <script src="lib/GLTFExporter.js"></script>
 <script type="module">
-    import {MeshAnima } from './lib/MeshAnima3.js'
+    import {MeshAnima } from './lib/MeshAnima2.js'
     var camera, scene, renderer;
     var light;
     init();
@@ -22,12 +22,15 @@
     function init() {
         camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 10000);
         camera.position.z = 20;
+
         scene = new THREE.Scene();
+
         renderer = new THREE.WebGLRenderer();
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setClearColor(0xddddff);
         document.body.appendChild( renderer.domElement );
+
         light = new THREE.AmbientLight(0xffffff,1.0)
         scene.add(light);
     }
@@ -35,6 +38,7 @@
         renderer.render( scene, camera );
         requestAnimationFrame(render);
     }
+
     var loader= new THREE.GLTFLoader();
     var path0="model/man01_gltf/man01.gltf"
     var path0="model/woman01/woman01.gltf"
@@ -46,10 +50,9 @@
         var animationType=prompt(
             "请输入动画编号:(动画总数"+glb.animations.length+")",
             // "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15"
-            "0,2,3,4,5,6,8,9,10,11,12,13,15"//1,7,14
-            //"3,4,11"
-            ).split(",")//挥手 点赞 跳跃 //哈欠 鼓掌 举手
-        var animations=[];
+            "0,2,3,4,5,6,8,9,10,11,12,13,15"  //1,7,14  //"3,4,11"
+            ).split(",") // 挥手 点赞 跳跃  // 哈欠 鼓掌 举手
+        var animations=[]
         for(var i=0;i<animationType.length;i++){
             var index=Math.floor(animationType[i])
             animations.push(
@@ -59,23 +62,28 @@
         // var animation=glb.animations[animationType];
         loader.load(path_model, (glb) => {
             exportGltf(glb,"model.gltf")
-
-            scene.add(glb.scene);
-            
-            var skeleton;
+            scene.add(glb.scene)
+            var skeleton
             glb.scene.traverse(function (node) {
             if(node instanceof THREE.SkinnedMesh)
-                skeleton=node.skeleton;
+                skeleton=node.skeleton
             })
             var skeleton_all=get_skeleton(glb)//获取所有的SkinMesh对象
-            var n= prompt("动画的总帧数为:",animations[0].tracks[0].times.length);//帧数量
-
+            var n= prompt("动画的总帧数为:",animations[0].tracks[0].times.length)//帧数量
             var meshAnima=new MeshAnima(skeleton_all[0],n)
-
+            // var meshAnima_All=[]
+            // for(let i=0;i<skeleton_all.length;i++){
+            //     meshAnima_All.push(
+            //         new MeshAnima(skeleton_all[i],n)
+            //     )
+            // }
             function next(index1,index2){//mesh编号, 动画编号
                 console.log("skinnedmesh编号",index1,skeleton_all.length)
                 if(index2==animations.length){
                     meshAnima.download()
+                    // for(let i=0;i<meshAnima_All.length;i++){
+                    //     meshAnima_All[i].download()
+                    // }
                     alert("finish!")
                     return
                 }else{//获取这个动画每一帧的数据
@@ -93,9 +101,8 @@
                 }
             }
             next(0,0)
-
-        });
-    });
+        })
+    })
     function get_skeleton(glb){
         var index0=0
         var skeleton_all=[]
@@ -126,56 +133,47 @@
         // var animation=glb.animations[0];
         var times=glb.animations[0].tracks[0].times;
         var time_all=times[times.length-1]//总时间
-        var mixer = new THREE.AnimationMixer(glb.scene);
-        var action=mixer.clipAction(animation);
-        action.play();
+        var mixer = new THREE.AnimationMixer(glb.scene)
+        var action=mixer.clipAction(animation)
+        action.play()
 
-        var t=0;
+        var t=0
         var interval=setInterval(function () {
-
             if(t<=n){//0~n
                 if(t==0){
                     mixer.update(0.000001);//0~n-1
                     meshAnima.additionFrameData1()//保存逆矩阵
                 }else{//1~n
                     meshAnima.additionFrameData2()//保存世界矩阵
-                    // for(let i=0;i<meshAnima_All.length;i++)
-                    //     meshAnima_All[i].additionFrameData()
                     mixer.update(time_all/(n-1))
                 }
-                t++;
+                t++
             }else{
                 clearInterval(interval)
                 meshAnima.finishOneAnima()
-                // for(let i=0;i<meshAnima_All.length;i++)
-                //     meshAnima_All[i].finishOneAnima()//addition(result)
                 if(cb)cb()
             }
         },30)
     }
-    
     function play2(glb,animation,skeleton,name,n,cb){
         console.log("该模型的骨骼个数为:",skeleton.bones.length)
-        // var animation=glb.animations[0];
         console.log("animation",animation)
-        var times=animation.tracks[0].times;
+        var times=animation.tracks[0].times
         var time_all=times[times.length-1]//该动画的的总时长
-        var mixer = new THREE.AnimationMixer(glb.scene);//new THREE.AnimationMixer(skeleton.parent);//
-        var action=mixer.clipAction(animation);
-        action.play();
-
+        var mixer = new THREE.AnimationMixer(glb.scene)
+        var action=mixer.clipAction(animation)
+        action.play()
         var boneMatrice=[]
         var t=0;
         mixer.update(animation.tracks[0].times[t]);
         var interval=setInterval(function () {
             if(t<n){
-                // console.log(time,n)
                 mixer.update(time_all/n);//时间增量
                 for(var i=0;i<skeleton.bones.length;i++)
                     for(var j=0;j<4;j++)//4行
                         for(var k=0;k<3;k++)//3列
                             boneMatrice.push(skeleton.boneMatrices[16*i+4*j+k])
-                t++;
+                t++
             }else{
                 clearInterval(interval)
                 var result={
@@ -184,23 +182,19 @@
 	                "boneNumber": skeleton.bones.length,
                     "animation":[boneMatrice]
                 }
-
-                // download(result)
                 if(cb)cb(result)
             }
         },30)
     }
-
     function download(result,name){
         var str=JSON.stringify(result , null, "\t")
-        var link = document.createElement('a');
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.href = URL.createObjectURL(new Blob([str], { type: 'text/plain' }));
-        link.download =name//"crowdData_male.json";
-        link.click();
+        var link = document.createElement('a')
+        link.style.display = 'none'
+        document.body.appendChild(link)
+        link.href = URL.createObjectURL(new Blob([str], { type: 'text/plain' }))
+        link.download =name
+        link.click()
     }
 </script>
-
 </body>
 </html>

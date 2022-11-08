@@ -56,7 +56,7 @@ export class Loader{
         new Building(this.scene)
 
         this.assets={}//为了防止资源重复加载，相同路径的资源只加载一次
-        var pathAnima="assets/animation_woman.json"
+        var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
         window.timeTest.measure("Anima start await")
         this.assets[pathAnima]=await CrowdMesh.loadAnimJSON(pathAnima)
         window.timeTest.measure("Anima end await")
@@ -79,7 +79,7 @@ export class Loader{
     load_model1(){
         var self = this
         var pathModel="assets/woman01.gltf"//woman01_0.glb"
-        var pathAnima="assets/animation_woman.json"
+        var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/woman01LOD/"
         window.timeTest.measure("gltf load start")
         new GLTFLoader().load(pathModel, (glb) => {
@@ -150,7 +150,7 @@ export class Loader{
     load_model2(){
         var self = this
         var pathModel="assets/woman02.gltf"//woman01_0.glb"
-        var pathAnima="assets/animation_woman.json"
+        var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/woman02LOD/"
         new GLTFLoader().load(pathModel, (glb) => {
             console.log("model2",glb)
