@@ -26,10 +26,6 @@ export class Loader{
         this.renderer.setPixelRatio(window.devicePixelRatio)
         window.renderer=this.renderer
         this.body.appendChild(this.renderer.domElement)
-        
-        // this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-		// this.renderer.toneMappingExposure = 1;
-		// this.renderer.outputEncoding = THREE.sRGBEncoding;
 
         this.stats = new Stats();
         this.stats.domElement.style.position = 'absolute'
@@ -43,10 +39,6 @@ export class Loader{
         this.scene = new THREE.Scene()
 
         this.camera = new THREE.PerspectiveCamera(50,this.body.clientWidth/this.body.clientHeight,0.1,5000)
-        this.camera.position.set(0,900,1200)
-        this.camera.position.set( 0.3929843495083386,  3.2093757045637235,  -0.280051510840248)
-        this.camera.position.set(28.702579663394783, 2.5203256354368047, -30.803680165450757)
-        this.camera.position.set(127.66061219919953,  4.469088314660405,  -50.15099201633093)
         this.camera.position.set(-43.486343682038736,  2.127206120237504,  -8.698678933445201)
         this.camera.lookAt(0,0,0)
         window.camera=this.camera
@@ -76,25 +68,10 @@ export class Loader{
     }
     initSky(cb){
         var scope=this
-        // this.getCubeMapTexture('assets/environment/skybox.hdr').then(
-        //     ({ envMap }) => {
-        //         scope.scene.background = envMap
-        //         console.log(envMap)
-        //     }
-        // )
-        // this.getCubeMapTexture('assets/environment/footprint_court_2k.hdr').then(
-        //     ({ envMap }) => {
-        //         scope.scene.environment = envMap
-        //     }
-        // )
-        // this.getCubeMapTexture('assets/environment/skybox.hdr').then(//royal_esplanade_1k
         this.getCubeMapTexture('assets/environment/royal_esplanade_1k.hdr').then(
             ({ envMap }) => {
-                // envMap.mapping = THREE.EquirectangularReflectionMapping;
-                // scope.scene.background = envMap
                 scope.scene.environment = envMap
                 if(cb)cb()
-                console.log(envMap)
             }
         )
     }
@@ -127,11 +104,9 @@ export class Loader{
           }
           return check
         }
-    
         var isIosPlatform = isMobile()
-    
         var path = evnMapAsset
-    
+        
         var scope = this
         var HalfFloatType=THREE.HalfFloatType
         var FloatType=THREE.FloatType

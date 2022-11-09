@@ -25,10 +25,11 @@ export class AvatarManager{
         var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/woman01LOD/"
         window.timeTest.measure("gltf load start")
-        new GLTFLoader().load(pathModel, (glb) => {
+        new GLTFLoader().load(pathModel, async (glb) => {
             window.timeTest.measure("gltf load end")
             console.log(glb)
-            new MaterialProcessor1(glb)
+            const p=new MaterialProcessor1(glb)
+            await p.init()
             window.timeTest.measure("MaterialProcessor1 end")
             var crowd=new Crowd({
                 camera:self.camera,
